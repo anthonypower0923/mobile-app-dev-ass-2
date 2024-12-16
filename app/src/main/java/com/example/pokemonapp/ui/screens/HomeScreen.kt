@@ -49,6 +49,8 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import com.example.pokemonapp.data.PokemonRepository
+import com.example.pokemonapp.network.PokemonAPIService
 import com.example.pokemonapp.network.Sprite
 import com.example.pokemonapp.ui.theme.PokemonAppTheme
 
@@ -56,7 +58,7 @@ import com.example.pokemonapp.ui.theme.PokemonAppTheme
 fun HomeScreen(pokemonUIState: PokemonUiState, retryAction: () -> Unit, modifier: Modifier = Modifier) {
     when (pokemonUIState) {
         is PokemonUiState.Loading -> LoadingScreen(modifier = modifier)
-        is PokemonUiState.Success -> PokemonGridScreenPreview()
+        is PokemonUiState.Success -> PokemonGridScreen(pokemonUIState.pokemon, modifier)
         is PokemonUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxSize())
     }
 }
@@ -114,11 +116,12 @@ fun PokemonGridScreenPreview() {
 fun PokemonCard(pokemon: Pokemon, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
     ) {
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(pokemon.name)
+                // Placeholder
+                .data("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png")
                 .crossfade(true)
                 .build(),
 

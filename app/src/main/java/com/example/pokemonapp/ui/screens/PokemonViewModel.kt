@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pokemonapp.data.NetworkPokemonRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
 import com.example.pokemonapp.data.PokemonRepository
@@ -17,13 +16,12 @@ import com.example.pokemonapp.PokemonApplication
 import com.example.pokemonapp.network.Pokemon
 
 sealed interface PokemonUiState {
-    data class Success(val photos: List<Pokemon>) : PokemonUiState
+    data class Success(val pokemon: List<Pokemon>) : PokemonUiState
     object Error : PokemonUiState
     object Loading : PokemonUiState
 }
 
 class PokemonViewModel(private val pokemonRepository: PokemonRepository) : ViewModel() {
-    /** The mutable State that stores the status of the most recent request */
     var pokemonUiState: PokemonUiState by mutableStateOf(PokemonUiState.Loading)
         private set
 
@@ -44,7 +42,7 @@ class PokemonViewModel(private val pokemonRepository: PokemonRepository) : ViewM
     fun getPokemon() {
         viewModelScope.launch {
             pokemonUiState = try {
-                PokemonUiState.Success(pokemonRepository.getPokemon().results)
+                PokemonUiState.Success(pokemonRepository.getPokemon())
             } catch (e: IOException) {
                 PokemonUiState.Error
             }
