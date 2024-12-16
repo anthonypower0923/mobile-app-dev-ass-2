@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PokemonApp</string>
+    <string name="loading">Loading</string>
+    <string name="loading_failed">Loading Failed. Please check your network connection and try again</string>
+    <string name="placeholder_result">Placeholder result text</string>
+    <string name="retry">Retry</string>
+    <string name="pokemon">Pokemon</string>
+</resources>
