@@ -128,18 +128,20 @@ fun PokemonCard(pokemon: Pokemon, modifier: Modifier = Modifier) {
         ),
 //        shape = CircleShape
     ) {
-        Text(
-            text = pokemon.name,
-            modifier = Modifier
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            color = Color.Black
-        )
+        pokemon.name?.let {
+            Text(
+                text = it,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                color = Color.Black
+            )
+        }
 
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
                 // Placeholder
-                .data(pokemon.sprites.front_default)
+                .data(pokemon.sprites?.frontDefault)
                 .crossfade(true)
                 .build(),
 
@@ -158,7 +160,7 @@ fun PokemonLinearScreen(pokemon: List<Pokemon>, modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(4.dp)
     ) {
-        items(items = pokemon, key = { pokemon -> pokemon.name }) { pokemon ->
+        items(items = pokemon, key = { pokemon -> pokemon.name!! }) { pokemon ->
             PokemonCard(
                 pokemon,
                 modifier = modifier
@@ -177,7 +179,7 @@ fun PokemonGridScreen(pokemon: List<Pokemon>, modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(4.dp)
     ) {
-        items(items = pokemon, key = { pokemon -> pokemon.name }) { pokemon ->
+        items(items = pokemon, key = { pokemon -> pokemon.name!! }) { pokemon ->
                 PokemonCard(
                     pokemon,
                     modifier = modifier
