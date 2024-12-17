@@ -13,9 +13,10 @@ class NetworkPokemonRepository(private val pokemonAPIService: PokemonAPIService)
     PokemonRepository {
     override suspend fun getResponse(): NetworkResponse = pokemonAPIService.getResponse()
     override suspend fun getPokemon(): List<Pokemon> {
-        var pokemonList = mutableListOf<Pokemon>()
-        for (i in 0..getResponse().count) {
-            var pokemon = pokemonAPIService.getPokemon(i)
+        val pokemonList = mutableListOf<Pokemon>()
+        // Start at 1 as id is indexed from 1
+        for (i in 1..getResponse().count) {
+            val pokemon = pokemonAPIService.getPokemon(i)
             pokemonList.add(pokemon)
     }
         return pokemonList
