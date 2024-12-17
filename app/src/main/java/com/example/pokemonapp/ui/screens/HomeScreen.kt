@@ -48,7 +48,13 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.style.TextAlign
 import com.example.pokemonapp.data.PokemonRepository
 import com.example.pokemonapp.network.PokemonAPIService
 import com.example.pokemonapp.network.Sprite
@@ -106,10 +112,10 @@ fun ResultScreen(photos: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun PokemonGridScreenPreview() {
-    PokemonAppTheme {
-        val mockData = List(10) { Pokemon("$it", "") }
-        PokemonGridScreen(mockData)
-    }
+//    PokemonAppTheme {
+//        val mockData = List(10) { Pokemon("$it", "") }
+//        PokemonGridScreen(mockData)
+//    }
 }
 
 @Composable
@@ -117,11 +123,23 @@ fun PokemonCard(pokemon: Pokemon, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White,
+        ),
+//        shape = CircleShape
     ) {
+        Text(
+            text = pokemon.name,
+            modifier = Modifier
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            color = Color.Black
+        )
+
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
                 // Placeholder
-                .data("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png")
+                .data(pokemon.sprites.front_default)
                 .crossfade(true)
                 .build(),
 
@@ -135,9 +153,27 @@ fun PokemonCard(pokemon: Pokemon, modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun PokemonLinearScreen(pokemon: List<Pokemon>, modifier: Modifier = Modifier) {
+    LazyColumn(
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(4.dp)
+    ) {
+        items(items = pokemon, key = { pokemon -> pokemon.name }) { pokemon ->
+            PokemonCard(
+                pokemon,
+                modifier = modifier
+                    .padding(4.dp)
+                    .fillMaxWidth()
+                    .aspectRatio(1.5f)
+            )
+        }
+    }
+}
+
+@Composable
 fun PokemonGridScreen(pokemon: List<Pokemon>, modifier: Modifier = Modifier) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(150.dp),
+        columns = GridCells.Adaptive(125.dp),
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(4.dp)
     ) {
@@ -151,5 +187,4 @@ fun PokemonGridScreen(pokemon: List<Pokemon>, modifier: Modifier = Modifier) {
                 )
             }
     }
-    println("Pokemon Data Type: $pokemon")
 }
